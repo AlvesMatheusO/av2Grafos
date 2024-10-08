@@ -1,4 +1,4 @@
-import { packagesNPM, packagesNPM2 } from "./packages.js";
+import { packagesNPM, packagesNPM2, packageMeme } from "./packages.js";
 
 function installPackages(packagesNPM) {
   let installed = new Set();
@@ -6,13 +6,16 @@ function installPackages(packagesNPM) {
 
   //DFS
   function visit(pkg) {
-    //Se o pacote ainda nao foi lido, sera adicionado no vetor package
+    //Se o pacote ja foi instalado pula para o proximo;
     if (installed.has(pkg)) return;
     
+    //Verifica se ha um ciclo: Caso seja adicionado um grafo com todos os pacotes dependendo de um ou outro 
     if (marked.has(pkg)) throw new Error(`Dependência circular detectada: ${pkg}`);
 
+    //Marca o pacote atual
     marked.add(pkg);
 
+    //Chama recursivamente as dependencias 
     if (packagesNPM[pkg]) {
         packagesNPM[pkg].forEach(dep => visit(dep));
     }
@@ -23,10 +26,10 @@ function installPackages(packagesNPM) {
     console.log(`Instalando package: ${pkg}`);
     }
 
-  // Loop para verificar a instalacao ou instalar
+  // Loop para chamar a funcao DFS percorrendo pelo grafo
   for (let pkg in packagesNPM) {
     visit(pkg);
   }
 }
-
-installPackages(packagesNPM2);
+//Escolher o grafo
+installPackages(packagesNPM);

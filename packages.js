@@ -28,3 +28,9 @@ export const packagesNPM2 = {
   "token-handler": ["encryption-lib"],
   "react-core": [],
 };
+
+export const packageMeme = {
+  "ui-library": ["css-engine"],
+  "css-engine": ["http-client",],
+  "http-client": ["ui-library"],
+};
